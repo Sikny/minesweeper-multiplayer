@@ -1,6 +1,23 @@
-cmake_minimum_required(VERSION 3.17)
-project(MinesweeperServer)
+cmake_minimum_required(VERSION 3.19)
 
-set(CMAKE_CXX_STANDARD 20)
+set(CMAKE_TOOLCHAIN_FILE "vcpkg/scripts/buildsystems/vcpkg.cmake")
+set(VCPKG_TARGET_TRIPLET "x64-windows-static")
 
-add_executable(MinesweeperServer main.cpp)
+cmake_policy(SET CMP0091 NEW)
+
+project(MineSweeperServer)
+
+add_executable(MineSweeperServer src/main.cpp)
+
+set_property(TARGET MineSweeperServer PROPERTY MSVC_RUNTIME_LIBRARY "MultiThreaded$<$<CONFIG:Debug>:Debug>")
+
+target_compile_options(MineSweeperServer PRIVATE /Zc:__cplusplus)
+target_compile_features(MineSweeperServer PRIVATE cxx_std_20)
+
+find_package(SFML COMPONENTS system window graphics CONFIG REQUIRED)
+
+target_include_directories(MineSweeperServer PRIVATE
+		)
+
+target_link_libraries(MineSweeperServer PRIVATE
+		sfml-system sfml-network sfml-graphics sfml-window)

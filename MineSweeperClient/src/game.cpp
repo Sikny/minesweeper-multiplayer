@@ -6,7 +6,7 @@ window(sf::VideoMode(cellSize*boardSize+cellSize*2, cellSize*boardSize+cellSize*
        , "Minesweeper - " + difficulty_str){
     std::cout << "Difficulty set to: " << difficulty_str << std::endl;
     font = new sf::Font();
-    font->loadFromFile("arial.ttf");
+    font->loadFromFile("resources/arial.ttf");
     std::cout << "Building board..." << std::endl;
     board = new Case[boardSize*boardSize];
     for(int i = 0; i < boardSize; i++){

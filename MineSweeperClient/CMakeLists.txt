@@ -7,7 +7,7 @@ cmake_policy(SET CMP0091 NEW)
 
 project(MineSweeperClient)
 
-add_executable(MineSweeperClient src/main.cpp src/GameState.cpp src/GameState.h src/Cell.h)
+add_executable(MineSweeperClient src/main.cpp src/GameState.cpp src/GameState.h src/Cell.h src/MainWindow.cpp src/MainWindow.h src/CellRenderer.cpp src/CellRenderer.h)
 
 set_property(TARGET MineSweeperClient PROPERTY MSVC_RUNTIME_LIBRARY "MultiThreaded$<$<CONFIG:Debug>:Debug>")
 

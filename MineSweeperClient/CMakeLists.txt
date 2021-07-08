@@ -7,7 +7,7 @@ cmake_policy(SET CMP0091 NEW)
 
 project(MineSweeperClient)
 
-add_executable(MineSweeperClient src/main.cpp)
+add_executable(MineSweeperClient src/main.cpp include/game.h src/game.cpp include/case.h src/case.cpp)
 
 set_property(TARGET MineSweeperClient PROPERTY MSVC_RUNTIME_LIBRARY "MultiThreaded$<$<CONFIG:Debug>:Debug>")
 
@@ -16,7 +16,7 @@ target_compile_features(MineSweeperClient PRIVATE cxx_std_20)
 
 find_package(SFML COMPONENTS system window graphics CONFIG REQUIRED)
 
-target_include_directories(MineSweeperClient PRIVATE
+target_include_directories(MineSweeperClient PRIVATE include
 		)
 
 target_link_libraries(MineSweeperClient PRIVATE

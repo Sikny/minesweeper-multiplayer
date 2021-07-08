@@ -23,8 +23,8 @@ Cell* GameState::getCell(int x, int y)
 void GameState::initBoard(int mineCount)
 {
 	std::mt19937 engine;
-	std::uniform_int_distribution distX(0, _width);
-	std::uniform_int_distribution distY(0, _height);
+	std::uniform_int_distribution distX(0, _width - 1);
+	std::uniform_int_distribution distY(0, _height - 1);
 	for (int i = 0; i < mineCount;)
 	{
 		int x = distX(engine);

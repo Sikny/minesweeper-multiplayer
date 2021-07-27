@@ -10,15 +10,17 @@
 
 class MainWindow {
 public:
-    MainWindow(int boardW, int boardH);
+    MainWindow(int boardW, int boardH, GameState& firstState);
     ~MainWindow();
     void processEvents();
     void run();
     void update();
     void render();
 
+    GameState gameState;
+
 private:
-    sf::RenderWindow _window;
+    sf::RenderWindow* _window;
     sf::Font* _font;
     float _cellSize;
     int _boardWidth;

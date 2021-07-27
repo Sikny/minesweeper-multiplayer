@@ -1,6 +1,8 @@
 #include <cstdlib>
 #include <SFML/Network.hpp>
 #include "UdpClient.h"
+#include "MainWindow.h"
+#include <SFML/Graphics.hpp>
 
 int main(int argc, char** argv)
 {
@@ -19,5 +21,15 @@ int main(int argc, char** argv)
 	nlohmann::json data;
 	data["difficulty"] = difficulty;
 	client.send(data);
-	client.receive();
+	auto received = client.receive();
+	auto gameData = nlohmann::json::parse(received);
+	std::cout << data.dump() << std::endl;
+
+	int width = gameData["width"];
+	int height = gameData["height"];
+
+    // todo get gamestate from server
+    GameState gameState(width, height, 10);
+	MainWindow window(width, height, gameState);
+	window.run();
 }

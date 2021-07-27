@@ -2,7 +2,10 @@
 #include <string>
 #include <iostream>
 #include <format>
+#include <csignal>
+#include <SFML/Network.hpp>
 #include "GameState.h"
+#include "UdpClient.h"
 
 int main(int argc, char** argv)
 {
@@ -48,4 +51,6 @@ int main(int argc, char** argv)
 	std::cout << "Difficulty: " << difficulty_str << std::endl;
 	std::cout << "Grid: " << boardWidth << 'x' << boardHeight << std::endl;
 	std::cout << "Bombs: " << nBombs << std::endl;
+
+	UdpClient client(sf::IpAddress::LocalHost, 55000);
 }

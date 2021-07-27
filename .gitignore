@@ -2,3 +2,4 @@ bin
 vcpkg
 .idea
 .vs
+cmake-build-debug

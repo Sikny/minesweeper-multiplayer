@@ -4,7 +4,7 @@ MainWindow::MainWindow(int boardW, int boardH, GameState& firstState) : _cellSiz
     _boardWidth(boardW), _boardHeight(boardH), gameState(firstState) {
     _window = new sf::RenderWindow(sf::VideoMode(_cellSize * _boardWidth + _cellSize * 2, _cellSize * _boardHeight + _cellSize * 2),"Minesweeper");
     _font = new sf::Font();
-    _font->loadFromFile("arial.ttf");
+    _font->loadFromFile("resources/arial.ttf");
     for(int i = 0; i < _boardHeight; ++i){
         for(int j = 0; j < _boardWidth; ++j){
             _cellRenderers.emplace_back(_cellSize, sf::Vector2f((float)i*(_cellSize+1)+_cellSize-(float)_boardWidth/2.0f, (float)j*(_cellSize+1)+_cellSize-(float)_boardHeight/2), _font);

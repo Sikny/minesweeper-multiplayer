@@ -24,9 +24,10 @@ std::string UdpClient::receive() {
         std::string message;
         packet >> message;
         std::cout << "Received message '" << message << "'" << std::endl;
+        return message;
     } else {
         sf::sleep(sf::milliseconds(100));
+        return std::string();
     }
-    return std::string();
 }
 

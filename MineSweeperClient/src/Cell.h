@@ -2,8 +2,7 @@
 
 struct Cell
 {
-	bool hasMine = false;
-	bool activated = false;
-	bool hasFlag = false;
-	int nearbyMines = -1;
+public:
+private:
+
 };

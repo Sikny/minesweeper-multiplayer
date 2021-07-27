@@ -3,7 +3,7 @@
 
 #include <iostream>
 #include <SFML/Network.hpp>
-#include "json.hpp"
+#include "../Common/json.hpp"
 
 enum CommunicationState{
     Send,

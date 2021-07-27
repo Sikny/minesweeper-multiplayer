@@ -5,7 +5,7 @@
 #include <SFML/Graphics/RenderWindow.hpp>
 #include <SFML/Graphics/Font.hpp>
 #include <SFML/Window/Event.hpp>
-#include "GameState.h"
+#include "../Common/GameState.h"
 #include "CellRenderer.h"
 
 class MainWindow {

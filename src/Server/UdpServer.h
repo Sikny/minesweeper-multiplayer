@@ -2,7 +2,7 @@
 #define MINESWEEPERSERVER_UDPSERVER_H
 
 #include <SFML/Network.hpp>
-#include "Game.h"
+#include "../Common/GameState.h"
 
 class UdpServer {
 public:
@@ -16,7 +16,7 @@ private:
 
     bool _running;
 
-    Game* _currentGame;
+    std::unique_ptr<GameState> _currentGame;
 };
 
 

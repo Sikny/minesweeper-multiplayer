@@ -17,7 +17,8 @@ int main(int argc, char** argv)
 
 	UdpClient client(sf::IpAddress::LocalHost, 55000);
 	nlohmann::json data;
-	data["difficulty"] = difficulty;
+	data["event"] = "create_new_game";
+	data["data"]["difficulty"] = difficulty;
 	client.send(data);
 	client.receive();
 }

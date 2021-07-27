@@ -126,7 +126,7 @@ GameState GameState::deserialize(const nlohmann::json& json)
 	
 	GameState gameState(width, height);
 	
-	for(int i = 0; i < gameState._board.size(); i++)
+	for(int i = 0; i < json["board"].array().size(); i++)
 	{
 		nlohmann::json jsonCell = json["board"][i];
 		Cell cell;

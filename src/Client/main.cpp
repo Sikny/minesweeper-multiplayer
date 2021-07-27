@@ -30,7 +30,8 @@ int main(int argc, char** argv)
 	int height = gameData["height"];
 
     // todo get gamestate from server
-    GameState gameState(width, height, 10);
+    GameState gameState = GameState::deserialize(gameData);
+
 	MainWindow window(width, height, gameState);
 	window.run();
 }

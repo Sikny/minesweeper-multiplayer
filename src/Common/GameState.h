@@ -2,7 +2,7 @@
 
 #include <vector>
 #include "Cell.h"
-#include "json.hpp"
+#include <nlohmann/json.hpp>
 
 class GameState
 {

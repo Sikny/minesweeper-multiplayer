@@ -61,6 +61,9 @@ void UdpServer::run() {
                     int cellX = eventData["cell"][0].get<int>();
                     int cellY = eventData["cell"][1].get<int>();
                     _currentGame->selectCell(cellX, cellY);
+                    if(_currentGame->hasWon()){
+                        _currentGame->winState = 1;
+                    }
                 }
                 dataSent = _currentGame->serialize();
             }

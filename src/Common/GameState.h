@@ -19,10 +19,12 @@ public:
 	[[nodiscard]] nlohmann::json serialize() const;
 	static GameState deserialize(const nlohmann::json& json);
     void selectCell(int posX, int posY);
+    bool hasWon();
 
     int winState = 0;
 
 private:
+    int _bombCount;
 	std::vector<Cell> _board;
 	int _width;
 	int _height;

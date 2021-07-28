@@ -4,21 +4,20 @@
 
 GameState::GameState(int difficulty)
 {
-	int mineCount;
 	switch (difficulty)
 	{
 		case 1:
 			_width = _height = 8;
-			mineCount = 10;
+			_bombCount = 10;
 			break;
 		case 2:
 			_width = _height = 16;
-			mineCount = 40;
+			_bombCount = 40;
 			break;
 		case 3:
 			_width = 30;
 			_height = 16;
-			mineCount = 99;
+			_bombCount = 99;
 			break;
 		default:
 			throw std::invalid_argument("Invalid difficulty number: " + std::to_string(difficulty));
@@ -26,7 +25,7 @@ GameState::GameState(int difficulty)
 	
 	_board.resize(_width * _height);
 	
-	initBoard(mineCount);
+	initBoard(_bombCount);
 }
 
 GameState::GameState(int width, int height, int mineCount):
@@ -169,4 +168,12 @@ void GameState::selectCell(int posX, int posY) {
             }
         }
     }
+}
+
+bool GameState::hasWon() {
+    int solvedCases = 0;
+    for(int i = 0; i < _width*_height; i++){
+        if(_board[i].activated) solvedCases++;
+    }
+    return (_width*_height-solvedCases) == _bombCount;
 }

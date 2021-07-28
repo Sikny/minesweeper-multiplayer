@@ -39,7 +39,7 @@ void UdpServer::run() {
 			} else if(eventType == "player_input"){
                 // get input
                 int cellX = eventData["cell"][0].get<int>();
-                int cellY = eventData["cell"][0].get<int>();
+                int cellY = eventData["cell"][1].get<int>();
                 _currentGame->selectCell(cellX, cellY);
             }
             

@@ -7,13 +7,14 @@
 #include <SFML/Window/Event.hpp>
 #include "../Common/GameState.h"
 #include "CellRenderer.h"
+#include "UdpClient.h"
 
 class MainWindow {
 public:
     MainWindow(int boardW, int boardH, GameState& firstState);
     ~MainWindow();
     void processEvents();
-    void run();
+    void run(UdpClient* client);
     void update();
     void render();
 
@@ -27,6 +28,8 @@ private:
     int _boardHeight;
 
     std::vector<CellRenderer> _cellRenderers;
+
+    UdpClient* _client;
 };
 
 

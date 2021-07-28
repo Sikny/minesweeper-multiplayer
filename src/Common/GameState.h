@@ -1,13 +1,14 @@
 #pragma once
 
 #include <vector>
+#include <SFML/System.hpp>
 #include "Cell.h"
 #include "json.hpp"
 
 class GameState
 {
 public:
-	GameState(int difficulty);
+	explicit GameState(int difficulty);
 	GameState(int width, int height, int mineCount);
 
 	// returns nullptr if position is outside the board
@@ -15,8 +16,9 @@ public:
 
 	bool hasMine(int x, int y);
 	
-	nlohmann::json serialize() const;
+	[[nodiscard]] nlohmann::json serialize() const;
 	static GameState deserialize(const nlohmann::json& json);
+    void selectCell(int posX, int posY);
 
 private:
 	std::vector<Cell> _board;
@@ -26,4 +28,5 @@ private:
 	void initBoard(int mineCount);
 	
 	GameState(int width, int height);
+
 };

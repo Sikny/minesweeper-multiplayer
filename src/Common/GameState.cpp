@@ -1,6 +1,7 @@
 #include "GameState.h"
 #include <random>
 #include <format>
+#include <iostream>
 
 GameState::GameState(int difficulty)
 {
@@ -48,7 +49,8 @@ Cell* GameState::getCell(int x, int y)
 
 void GameState::initBoard(int mineCount)
 {
-	std::mt19937 engine;
+    std::random_device dev;
+	std::mt19937 engine(dev());
 	std::uniform_int_distribution distX(0, _width - 1);
 	std::uniform_int_distribution distY(0, _height - 1);
 	for (int i = 0; i < mineCount;)
@@ -126,15 +128,15 @@ GameState GameState::deserialize(const nlohmann::json& json)
 	
 	GameState gameState(width, height);
 	
-	for(int i = 0; i < json["board"].array().size(); i++)
+	for(int i = 0; i < json["board"].size(); i++)
 	{
 		nlohmann::json jsonCell = json["board"][i];
 		Cell cell;
-		cell.hasMine = jsonCell["hasMine"];
-		cell.activated = jsonCell["activated"];
-		cell.hasFlag = jsonCell["hasFlag"];
+		cell.hasMine = jsonCell["hasMine"].get<bool>();
+		cell.activated = jsonCell["activated"].get<bool>();
+		cell.hasFlag = jsonCell["hasFlag"].get<bool>();
 		cell.nearbyMines = jsonCell["nearbyMines"];
-		gameState._board.push_back(cell);
+		gameState._board[i] = cell;
 	}
 	
 	return gameState;
@@ -144,4 +146,32 @@ GameState::GameState(int width, int height):
 _width(width), _height(height)
 {
 	_board.resize(width * height);
+}
+
+void GameState::selectCell(int posX, int posY) {
+    Cell* cell = getCell(posX, posY);
+    if(cell->activated) return;
+    cell->activated = true;
+    if(cell->hasMine){
+        // todo lose
+    } else {
+        for(int i = posX - 1; i <= posX + 1; ++i){
+            for(int j = posY - 1; j <= posY + 1; ++j){
+                if(i >= 0 && i < _width && j >= 0 && j < _height){
+                    if(getCell(i, j)->hasMine)
+                        cell->nearbyMines++;
+                }
+            }
+        }
+        if(cell->nearbyMines == 0){
+            for(int i = posX - 1; i <= posX + 1; ++i){
+                for(int j = posY - 1; j <= posY + 1; ++j){
+                    if(i >= 0 && i < _width && j >= 0 && j < _height){
+                        if(!getCell(i, j)->activated)
+                            selectCell(i, j);
+                    }
+                }
+            }
+        }
+    }
 }

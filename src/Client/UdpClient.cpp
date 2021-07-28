@@ -23,11 +23,15 @@ std::string UdpClient::receive() {
     if(_socket.receive(packet, ipAddress, port) == sf::Socket::Done){
         std::string message;
         packet >> message;
-        std::cout << "Received message '" << message << "'" << std::endl;
+        //std::cout << "Received message '" << message << "'" << std::endl;
         return message;
     } else {
         sf::sleep(sf::milliseconds(100));
         return std::string();
     }
+}
+
+void UdpClient::close() {
+    _socket.unbind();
 }
 

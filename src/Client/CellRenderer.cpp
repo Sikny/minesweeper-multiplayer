@@ -27,7 +27,33 @@ void CellRenderer::unhover() {
     color = sf::Color::White;
 }
 
-bool CellRenderer::hasMouseOver(sf::Vector2i mousePos) {
+bool CellRenderer::hasMouseOver(sf::Vector2i mousePos) const {
     return (mousePos.x >= posX && mousePos.y >= posY
         && mousePos.x <= posX+_caseSize && mousePos.y <= posY+_caseSize);
+}
+
+void CellRenderer::setStatus(int _status) {
+    status.setString(std::to_string(_status));
+    switch(_status){
+        case 1:
+            fontColor = sf::Color::Blue;
+            break;
+        case 2:
+            fontColor = sf::Color::Green;
+            break;
+        case 3:
+            fontColor = sf::Color::Red;
+            break;
+        case 4:
+            fontColor = sf::Color(0, 0, 132);
+            break;
+        case 5:
+            fontColor = sf::Color(132, 0, 0);
+            break;
+        case 6:
+            fontColor = sf::Color::Cyan;
+            break;
+        default:
+            fontColor = sf::Color(64, 0, 64);
+    }
 }

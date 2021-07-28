@@ -5,16 +5,12 @@
 #include <SFML/Network.hpp>
 #include "../Common/json.hpp"
 
-enum CommunicationState{
-    Send,
-    Receive
-};
-
 class UdpClient {
 public:
     UdpClient(sf::IpAddress serverIp, int serverPort);
     void send(const nlohmann::json& message);
     std::string receive();
+    void close();
 private:
     const sf::IpAddress _serverIp;
     const int _serverPort;

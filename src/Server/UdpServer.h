@@ -17,6 +17,8 @@ private:
     bool _running;
 
     std::unique_ptr<GameState> _currentGame;
+
+    static int _lastClientId;
 };
 
 

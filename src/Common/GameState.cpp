@@ -1,6 +1,5 @@
 #include "GameState.h"
 #include <random>
-#include <format>
 #include <iostream>
 
 GameState::GameState(int difficulty)
@@ -22,7 +21,7 @@ GameState::GameState(int difficulty)
 			mineCount = 99;
 			break;
 		default:
-			throw std::invalid_argument(std::format("Invalid difficulty number: {}", difficulty));
+			throw std::invalid_argument("Invalid difficulty number: " + std::to_string(difficulty));
 	}
 	
 	_board.resize(_width * _height);
@@ -156,14 +155,6 @@ void GameState::selectCell(int posX, int posY) {
         // todo lose
         std::cout << "LOSE" << std::endl;
     } else {
-        /*for(int i = posX - 1; i <= posX + 1; ++i){
-            for(int j = posY - 1; j <= posY + 1; ++j){
-                if(i >= 0 && i < _width && j >= 0 && j < _height){
-                    if(getCell(i, j)->hasMine)
-                        cell->nearbyMines++;
-                }
-            }
-        }*/
         if(cell->nearbyMines == 0){
             for(int i = posX - 1; i <= posX + 1; ++i){
                 for(int j = posY - 1; j <= posY + 1; ++j){

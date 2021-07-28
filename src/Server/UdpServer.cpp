@@ -19,9 +19,12 @@ void UdpServer::run() {
         if(_socket.receive(packet, ipAddress, port) == sf::Socket::Done){
             std::string data;
             packet >> data;
+            packet.clear();
             auto json = nlohmann::json::parse(data);
             std::string eventType = json["event"];
             auto eventData = json["data"];
+
+            // todo if no id, create one, send it to client and increase lastClientId
 
             if (eventType == "create_new_game")
 			{
@@ -45,7 +48,6 @@ void UdpServer::run() {
             
             
 
-            packet.clear();
             packet << _currentGame->serialize().dump();
             if(_socket.send(packet, ipAddress, port) == sf::Socket::Done){
                 std::cout << "Game state sent" << std::endl;

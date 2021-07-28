@@ -33,7 +33,7 @@ add_custom_command(TARGET MineSweeperClient PRE_BUILD
 
 project(MineSweeperServer)
 
-add_executable(MineSweeperServer src/Server/main.cpp src/Common/GameState.cpp src/Common/GameState.h src/Common/Cell.h src/Server/UdpServer.cpp src/Server/UdpServer.h)
+add_executable(MineSweeperServer src/Server/main.cpp src/Common/GameState.cpp src/Common/GameState.h src/Common/Cell.h src/Server/UdpServer.cpp src/Server/UdpServer.h src/Server/Client.h)
 
 set_property(TARGET MineSweeperServer PROPERTY MSVC_RUNTIME_LIBRARY "MultiThreaded$<$<CONFIG:Debug>:Debug>")
 

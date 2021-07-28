@@ -3,6 +3,7 @@
 
 #include <SFML/Network.hpp>
 #include "../Common/GameState.h"
+#include "Client.h"
 
 class UdpServer {
 public:
@@ -19,6 +20,8 @@ private:
     std::unique_ptr<GameState> _currentGame;
 
     static int _lastClientId;
+
+    std::map<int, Client> _clients;
 };
 
 

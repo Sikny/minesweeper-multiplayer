@@ -2,8 +2,11 @@
 #include <nlohmann/json.hpp>
 #include "UdpServer.h"
 
+int UdpServer::_lastClientId;
+
 UdpServer::UdpServer(sf::IpAddress serverIp, int serverPort)
     : _serverIp(serverIp), _serverPort(serverPort), _running(true), _currentGame(nullptr) {
+    _lastClientId = 0;
     if(_socket.bind(_serverPort, _serverIp) != sf::Socket::Done){
         std::cerr << "Unable to bind on port " << _serverPort << std::endl;
     }
@@ -24,7 +27,18 @@ void UdpServer::run() {
             std::string eventType = json["event"];
             auto eventData = json["data"];
 
-            // todo if no id, create one, send it to client and increase lastClientId
+            // if no id, create one, send it to client and increase lastClientId
+            int userId;
+            if(!json.contains("user_id")){
+                userId = _lastClientId++;
+                Client client;
+                client.clientIpAddress = ipAddress;
+                client.clientPort = port;
+                _clients[userId] = client;
+                std::cout << "client connected with ip " << ipAddress << ", id attributed " << userId << std::endl;
+            } else {
+                userId = json["user_id"].get<int>();
+            }
 
             if (eventType == "create_new_game")
 			{
@@ -45,10 +59,12 @@ void UdpServer::run() {
                 int cellY = eventData["cell"][1].get<int>();
                 _currentGame->selectCell(cellX, cellY);
             }
-            
-            
 
-            packet << _currentGame->serialize().dump();
+
+
+            auto dataSent = _currentGame->serialize();
+            dataSent["user_id"] = userId;
+            packet << dataSent.dump();
             if(_socket.send(packet, ipAddress, port) == sf::Socket::Done){
                 std::cout << "Game state sent" << std::endl;
             }

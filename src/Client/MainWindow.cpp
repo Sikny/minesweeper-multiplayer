@@ -44,6 +44,7 @@ void MainWindow::processEvents() {
                     inputData["event"] = "player_input";
                     inputData["data"]["cell"][0] = _cellRenderers[i].arrayPosition.x;
                     inputData["data"]["cell"][1] = _cellRenderers[i].arrayPosition.y;
+                    inputData["user_id"] = _client->clientId;
                     _client->send(inputData);
 
                     std::string received = _client->receive();

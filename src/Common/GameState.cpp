@@ -50,8 +50,8 @@ void GameState::initBoard(int mineCount)
 {
     std::random_device dev;
 	std::mt19937 engine(dev());
-	std::uniform_int_distribution distX(0, _width - 1);
-	std::uniform_int_distribution distY(0, _height - 1);
+	std::uniform_int_distribution<> distX(0, _width - 1);
+	std::uniform_int_distribution<> distY(0, _height - 1);
 	for (int i = 0; i < mineCount;)
 	{
 		int x = distX(engine);

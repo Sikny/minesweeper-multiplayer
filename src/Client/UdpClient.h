@@ -11,10 +11,12 @@ public:
     void send(const nlohmann::json& message);
     std::string receive();
     void close();
+    int clientId;
 private:
     const sf::IpAddress _serverIp;
     const int _serverPort;
     sf::UdpSocket _socket;
+
 };
 
 

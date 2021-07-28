@@ -24,6 +24,9 @@ int main(int argc, char** argv)
 	client->send(data);
 	auto received = client->receive();
 	auto gameData = nlohmann::json::parse(received);
+	if(gameData.contains("user_id")){
+	    client->clientId = gameData["user_id"].get<int>();
+	}
 	//std::cout << data.dump() << std::endl;
 
 	int width = gameData["width"];

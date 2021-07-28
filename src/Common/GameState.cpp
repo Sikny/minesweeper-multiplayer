@@ -114,6 +114,7 @@ nlohmann::json GameState::serialize() const
 		board.push_back(jsonCell);
 	}
 	data["board"] = board;
+	data["winState"] = winState;
 	
 	data["width"] = _width;
 	data["height"] = _height;
@@ -136,6 +137,7 @@ GameState GameState::deserialize(const nlohmann::json& json)
 		cell.hasFlag = jsonCell["hasFlag"].get<bool>();
 		cell.nearbyMines = jsonCell["nearbyMines"];
 		gameState._board[i] = cell;
+		gameState.winState = json["winState"];
 	}
 	
 	return gameState;
@@ -154,7 +156,7 @@ void GameState::selectCell(int posX, int posY) {
     if(cell->hasMine){
         // todo lose
         std::cout << "LOSE" << std::endl;
-        winState = 1;
+        winState = 2;
     } else {
         if(cell->nearbyMines == 0){
             for(int i = posX - 1; i <= posX + 1; ++i){

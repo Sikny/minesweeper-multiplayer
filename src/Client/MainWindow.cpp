@@ -27,8 +27,8 @@ void MainWindow::run(UdpClient* client) {
         if(_updateGame){
             processEvents();
             update();
+            render();
         }
-        render();
     }
 }
 
@@ -69,6 +69,36 @@ void MainWindow::processEvents() {
 }
 
 void MainWindow::update() {
+    if(gameState.winState != 0){
+        std::cout << "LOSE" << std::endl;
+        // game ended
+        _updateGame = false;
+
+        sf::RenderWindow dialog(sf::VideoMode(150, 50), "Game ended");
+        sf::Text result;
+        if(gameState.winState == 1){
+            result.setString("YOU WIN !");
+        } else if(gameState.winState == 2){
+            result.setString("YOU LOSE !");
+        }
+        result.setFont(*_font);
+        result.setCharacterSize(20);
+        result.setPosition(10, 10);
+        result.setFillColor(sf::Color::White);
+        while(dialog.isOpen()){
+            dialog.clear();
+            dialog.draw(result);
+            dialog.display();
+            sf::Event event{};
+            while(dialog.pollEvent(event)){
+                if(event.type == sf::Event::Closed){
+                    dialog.close();
+                    _window->close();
+                    return;
+                }
+            }
+        }
+    }
     if(_clock.getElapsedTime().asMilliseconds() > 100){
         _clock.restart();
         nlohmann::json data;
@@ -85,32 +115,6 @@ void MainWindow::update() {
             Cell* cell = gameState.getCell(i, j);
             if(cell->activated){
                 _cellRenderers[i * _boardWidth + j].color = sf::Color(100, 100, 100);
-                if(cell->hasMine){
-                    // todo lose
-                    std::cout << "YOU LOSE" << std::endl;
-                    _updateGame = false;
-
-                    sf::RenderWindow dialog(sf::VideoMode(100, 100), "You lose");
-                    sf::Text result("YOU LOSE !", *_font);
-                    result.setCharacterSize(12);
-                    result.setPosition(10, 10);
-                    result.setFillColor(sf::Color::White);
-
-                    while(dialog.isOpen()){
-                        sf::Event event{};
-                        while(dialog.pollEvent(event)){
-                            if(event.type == sf::Event::Closed){
-                                dialog.close();
-                                _window->close();
-                            }
-                        }
-                        dialog.clear();
-                        dialog.draw(result);
-                        dialog.display();
-                    }
-
-                    return;
-                }
                 if(cell->nearbyMines > 0){
                     _cellRenderers[i * _boardWidth + j].setStatus(cell->nearbyMines);
                 }

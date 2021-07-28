@@ -30,6 +30,10 @@ private:
     std::vector<CellRenderer> _cellRenderers;
 
     UdpClient* _client;
+
+    sf::Clock _clock;
+
+    bool _updateGame;
 };
 
 

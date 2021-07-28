@@ -154,6 +154,7 @@ void GameState::selectCell(int posX, int posY) {
     if(cell->hasMine){
         // todo lose
         std::cout << "LOSE" << std::endl;
+        winState = 1;
     } else {
         if(cell->nearbyMines == 0){
             for(int i = posX - 1; i <= posX + 1; ++i){

@@ -53,20 +53,27 @@ void UdpServer::run() {
 				{
 					// do nothing
 				}
-			} else if(eventType == "player_input"){
+			} else if(_currentGame == nullptr){
+                continue;
+            }
+
+            if(eventType == "player_input"){
                 // get input
                 int cellX = eventData["cell"][0].get<int>();
                 int cellY = eventData["cell"][1].get<int>();
                 _currentGame->selectCell(cellX, cellY);
             }
 
-
-
             auto dataSent = _currentGame->serialize();
             dataSent["user_id"] = userId;
             packet << dataSent.dump();
             if(_socket.send(packet, ipAddress, port) == sf::Socket::Done){
-                std::cout << "Game state sent" << std::endl;
+                //std::cout << "Game state sent" << std::endl;
+            }
+            if(_currentGame->winState != 0){
+                // game ended, either win or lose
+                _currentGame = nullptr;
+                std::cout << "Game ended" << std::endl;
             }
         }
     }

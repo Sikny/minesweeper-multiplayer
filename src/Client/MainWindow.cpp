@@ -1,7 +1,8 @@
+
 #include "MainWindow.h"
 
-MainWindow::MainWindow(int boardW, int boardH, GameState& firstState) : _cellSize(30.0f),
-    _boardWidth(boardW), _boardHeight(boardH), gameState(firstState) {
+MainWindow::MainWindow(int boardW, int boardH, GameState& firstState)
+    : _cellSize(30.0f), _boardWidth(boardW), _boardHeight(boardH), gameState(firstState), _updateGame(true) {
     _window = new sf::RenderWindow(sf::VideoMode(_cellSize * _boardWidth + _cellSize * 2, _cellSize * _boardHeight + _cellSize * 2),"Minesweeper");
     _font = new sf::Font();
     _font->loadFromFile("resources/arial.ttf");
@@ -12,6 +13,7 @@ MainWindow::MainWindow(int boardW, int boardH, GameState& firstState) : _cellSiz
             _cellRenderers.emplace_back(cell);
         }
     }
+    _clock.restart();
 }
 
 MainWindow::~MainWindow() {
@@ -22,8 +24,10 @@ MainWindow::~MainWindow() {
 void MainWindow::run(UdpClient* client) {
     _client = client;
     while(_window->isOpen()){
-        processEvents();
-        update();
+        if(_updateGame){
+            processEvents();
+            update();
+        }
         render();
     }
 }
@@ -54,7 +58,6 @@ void MainWindow::processEvents() {
             }
         } else if(event.type == sf::Event::MouseMoved){
             sf::Vector2i mousePos = sf::Mouse::getPosition(*_window);
-            // todo hover here
             for(unsigned short i = 0; i < _boardWidth*_boardHeight; i++){
                 if(_cellRenderers[i].hasMouseOver(mousePos)){
                     if(event.type == sf::Event::MouseMoved) _cellRenderers[i].hover();
@@ -66,6 +69,17 @@ void MainWindow::processEvents() {
 }
 
 void MainWindow::update() {
+    if(_clock.getElapsedTime().asMilliseconds() > 100){
+        _clock.restart();
+        nlohmann::json data;
+        data["user_id"] = _client->clientId;
+        data["event"] = "update_gamestate";
+        _client->send(data);
+
+        std::string received = _client->receive();
+        nlohmann::json gameData = nlohmann::json::parse(received);
+        gameState = GameState::deserialize(gameData);
+    }
     for(int i = 0; i < _boardWidth; ++i){
         for(int j = 0; j < _boardHeight; ++j){
             Cell* cell = gameState.getCell(i, j);
@@ -73,6 +87,29 @@ void MainWindow::update() {
                 _cellRenderers[i * _boardWidth + j].color = sf::Color(100, 100, 100);
                 if(cell->hasMine){
                     // todo lose
+                    std::cout << "YOU LOSE" << std::endl;
+                    _updateGame = false;
+
+                    sf::RenderWindow dialog(sf::VideoMode(100, 100), "You lose");
+                    sf::Text result("YOU LOSE !", *_font);
+                    result.setCharacterSize(12);
+                    result.setPosition(10, 10);
+                    result.setFillColor(sf::Color::White);
+
+                    while(dialog.isOpen()){
+                        sf::Event event{};
+                        while(dialog.pollEvent(event)){
+                            if(event.type == sf::Event::Closed){
+                                dialog.close();
+                                _window->close();
+                            }
+                        }
+                        dialog.clear();
+                        dialog.draw(result);
+                        dialog.display();
+                    }
+
+                    return;
                 }
                 if(cell->nearbyMines > 0){
                     _cellRenderers[i * _boardWidth + j].setStatus(cell->nearbyMines);

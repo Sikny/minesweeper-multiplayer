@@ -9,7 +9,7 @@ void UdpClient::send(const nlohmann::json &message) {
     sf::Packet packet = sf::Packet();
     packet << message.dump();
     if(_socket.send(packet, _serverIp, _serverPort) == sf::Socket::Done){
-        std::cout << "Sending message '" << message.dump() << "'" << std::endl;
+        //std::cout << "Sending message '" << message.dump() << "'" << std::endl;
     } else {
         std::cerr << "Error sending message to " << _serverIp << ":" << _serverPort << std::endl;
         sf::sleep(sf::milliseconds(100));

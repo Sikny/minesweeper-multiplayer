@@ -20,6 +20,8 @@ public:
 	static GameState deserialize(const nlohmann::json& json);
     void selectCell(int posX, int posY);
 
+    int winState = 0;
+
 private:
 	std::vector<Cell> _board;
 	int _width;

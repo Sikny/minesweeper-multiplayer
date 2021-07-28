@@ -3,7 +3,7 @@
 
 #include <iostream>
 #include <SFML/Network.hpp>
-#include "../Common/json.hpp"
+#include <nlohmann/json.hpp>
 
 class UdpClient {
 public:

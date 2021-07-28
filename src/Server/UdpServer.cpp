@@ -1,5 +1,5 @@
 #include <iostream>
-#include "../Common/json.hpp"
+#include <nlohmann/json.hpp>
 #include "UdpServer.h"
 
 UdpServer::UdpServer(sf::IpAddress serverIp, int serverPort)
